@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'links_data.dart'; // Imports your new data structure
+import 'package:url_launcher/url_launcher.dart'; // This needs pubspec.yaml to have url_launcher
+import 'package:google_fonts/google_fonts.dart'; // This needs pubspec.yaml to have google_fonts
+import 'links_data.dart'; // Imports the file we just fixed
 
 void main() {
   runApp(const BharatVerifyApp());
@@ -29,26 +29,31 @@ class BharatVerifyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // Function to handle Email Logic
+  // Safe Email Launch Function
   Future<void> _sendFeedback() async {
+    // We use the variables from links_data.dart
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: contactEmail, // Fetches from links_data.dart
+      path: contactEmail, 
       queryParameters: {
         'subject': emailSubject,
-        'body': 'Hi, I have a suggestion/feedback for Bharat Verify:\n\n'
+        'body': 'Hi, I have a suggestion for Bharat Verify:\n\n'
       },
     );
 
-    if (!await launchUrl(emailLaunchUri)) {
-      debugPrint('Could not launch email client');
+    try {
+      if (!await launchUrl(emailLaunchUri)) {
+        debugPrint('Could not launch email client');
+      }
+    } catch (e) {
+      debugPrint('Error launching email: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, // Two tabs: Verify vs Personal
+      length: 2, 
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Bharat Verify', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
@@ -56,7 +61,6 @@ class HomePage extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           
-          // --- NEW CONTACT BUTTON ---
           actions: [
             IconButton(
               icon: const Icon(Icons.mail_outline, color: Colors.white),
@@ -66,11 +70,10 @@ class HomePage extends StatelessWidget {
             const SizedBox(width: 10),
           ],
           
-          // --- TABS ---
           bottom: const TabBar(
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white60,
-            indicatorColor: Color(0xFFFF9933), // Saffron Indicator
+            indicatorColor: Color(0xFFFF9933), 
             indicatorWeight: 4,
             tabs: [
               Tab(icon: Icon(Icons.travel_explore), text: "VERIFY OTHERS"),
@@ -80,9 +83,7 @@ class HomePage extends StatelessWidget {
         ),
         body: const TabBarView(
           children: [
-            // Tab 1: Verify Mode (Blue Theme)
             CategoryGrid(mode: 'verify'),
-            // Tab 2: Personal Mode (Orange Theme)
             CategoryGrid(mode: 'personal'),
           ],
         ),
@@ -91,9 +92,8 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// --- Reusable Grid Component ---
 class CategoryGrid extends StatelessWidget {
-  final String mode; // 'verify' or 'personal'
+  final String mode; 
 
   const CategoryGrid({super.key, required this.mode});
 
@@ -128,7 +128,6 @@ class CategoryGrid extends StatelessWidget {
           ),
         ),
 
-        // Disclaimer Footer
         Container(
           padding: const EdgeInsets.all(16),
           color: Colors.grey.shade200,
@@ -145,12 +144,16 @@ class CategoryGrid extends StatelessWidget {
 
   Widget _buildGridCard(BuildContext context, Map<String, dynamic> category) {
     IconData iconData;
+    // Safety check to ensure icon exists
     switch (category['icon']) {
       case 'directions_car': iconData = Icons.directions_car; break;
       case 'store': iconData = Icons.store; break;
       case 'account_balance_wallet': iconData = Icons.account_balance_wallet; break;
       default: iconData = Icons.person;
     }
+
+    // Safety check for color
+    Color cardColor = Color(category['color'] ?? 0xFF2196F3);
 
     return Card(
       elevation: 4,
@@ -164,8 +167,8 @@ class CategoryGrid extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 35,
-              backgroundColor: Color(category['color']).withOpacity(0.1),
-              child: Icon(iconData, size: 35, color: Color(category['color'])),
+              backgroundColor: cardColor.withOpacity(0.1),
+              child: Icon(iconData, size: 35, color: cardColor),
             ),
             const SizedBox(height: 15),
             Text(
@@ -178,3 +181,65 @@ class CategoryGrid extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showToolList(BuildContext context, Map<String, dynamic> category) {
+    final List<Map<String, String>> tools = 
+        (category[mode] as List<dynamic>).map((e) => Map<String, String>.from(e)).toList();
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(10))),
+            const SizedBox(height: 20),
+            
+            Text(
+              "${category['title']} (${mode == 'verify' ? 'Verify' : 'My Docs'})", 
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+            ),
+            const SizedBox(height: 20),
+            
+            Expanded(
+              child: ListView(
+                children: tools.map((tool) => Card(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  elevation: 0,
+                  color: mode == 'verify' ? Colors.blue.shade50 : Colors.orange.shade50,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: mode == 'verify' ? Colors.blue.shade100 : Colors.orange.shade100),
+                  ),
+                  child: ListTile(
+                    title: Text(tool['name']!, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Text(tool['desc']!, style: const TextStyle(fontSize: 12)),
+                    trailing: Icon(Icons.arrow_forward_ios, size: 14, color: mode == 'verify' ? Colors.blue : Colors.orange),
+                    onTap: () => _launchURL(tool['url']!),
+                  ),
+                )).toList(),
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
+    }
+  }
+}

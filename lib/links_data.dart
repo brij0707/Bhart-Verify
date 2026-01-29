@@ -16,8 +16,13 @@ final Map<String, dynamic> gridCategories = {
     "verify": [
       {
         "name": "Vehicle RC Status",
-        "url": "https://parivahan.gov.in/rcdlstatus/?pur_cd=102",
+        "url": "https://parivahan.gov.in/rcdlstatus/?pur_cd=102", // Fixed: 102 for Vehicle
         "desc": "Check Owner Name, Age & Fuel Type."
+      },
+      {
+        "name": "Driving License (DL)",
+        "url": "https://parivahan.gov.in/rcdlstatus/?pur_cd=101", // Fixed: 101 for License
+        "desc": "Verify if a License is valid."
       },
       {
         "name": "e-Challan Check",
@@ -28,11 +33,6 @@ final Map<String, dynamic> gridCategories = {
         "name": "Stolen Vehicle Check",
         "url": "https://digitalpolice.gov.in/",
         "desc": "Search National Crime Records (NCRB)."
-      },
-      {
-        "name": "Driving License (DL)",
-        "url": "https://parivahan.gov.in/rcdlstatus/?pur_cd=101",
-        "desc": "Verify if a License is valid."
       }
     ],
     "personal": [

@@ -1,7 +1,7 @@
 // lib/links_data.dart
 
 // Replace this with your actual email for feedback
-const String contactEmail = "your-email@example.com"; 
+const String contactEmail = "innomind2022@gmail.com"; 
 const String emailSubject = "Bharat Verify - Suggestion / Feedback";
 
 final Map<String, dynamic> gridCategories = {

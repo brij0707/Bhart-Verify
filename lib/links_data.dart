@@ -1,11 +1,10 @@
 // lib/links_data.dart
 
-// We organize tools into 4 Master Categories for the Grid UI
 final Map<String, dynamic> gridCategories = {
   // 🚘 ASSETS
   "ASSETS": {
     "title": "Assets & Transport",
-    "icon": "directions_car", // Material Icon Name
+    "icon": "directions_car",
     "color": 0xFF4CAF50, // Green
     "tools": [
       {
@@ -49,7 +48,7 @@ final Map<String, dynamic> gridCategories = {
       },
       {
         "name": "Passport Status",
-        "url": "https://portal2.passportindia.gov.in/AppOnlineProject/statusTracker/trackStatusInpNew",
+        "url": "https://passportindia.gov.in/AppOnlineProject/statusTracker/trackStatusInpNew",
         "desc": "Track Application & Name Details."
       },
       {

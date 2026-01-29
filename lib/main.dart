@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart'; // To open browser
-import 'links_data.dart'; // Importing your "Brain"
+import 'package:url_launcher/url_launcher.dart';
+import 'links_data.dart'; // Imports your Brain file
 
 void main() {
   runApp(const BharatVerifyApp());
@@ -81,7 +81,6 @@ class DashboardScreen extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
           onTap: () {
-            // Navigate to the list of links for this category
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => CategoryListScreen(categoryName: title)),
@@ -115,14 +114,13 @@ class CategoryListScreen extends StatelessWidget {
 
   Future<void> _launchURL(String urlString) async {
     final Uri url = Uri.parse(urlString);
-    if (!await launchUrl(url, mode: LaunchMode.inAppWebView)) {
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // 1. Filter the "Brain" to find links for this category
     final categoryLinks = verificationLinks.where((item) => item['category'] == categoryName).toList();
 
     return Scaffold(

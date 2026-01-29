@@ -21,19 +21,15 @@ jobs:
           flutter-version: '3.19.0'
           channel: 'stable'
 
-      # --- 1. THE FIX: Regenerate Missing Android Files ---
       - name: Recreate Android Project
         run: |
-          # 1. Move your custom files to a safe place
           mkdir temp_safe
           mv lib temp_safe/
           mv assets temp_safe/
           mv pubspec.yaml temp_safe/
           
-          # 2. Create a fresh project (This generates the missing android/ folder)
           flutter create . --org com.innomind.bharatverify --project-name bharat_verify
           
-          # 3. Restore your custom files
           rm -rf lib assets pubspec.yaml
           mv temp_safe/lib .
           mv temp_safe/assets .
@@ -42,6 +38,13 @@ jobs:
 
       - name: Get Dependencies
         run: flutter pub get
+
+      # --- FORCE ICON GENERATION ---
+      - name: Generate App Icon
+        run: |
+          dart run flutter_launcher_icons
+          # Run twice to force overwrite
+          dart run flutter_launcher_icons
 
       - name: Build APK
         run: flutter build apk --release --no-tree-shake-icons

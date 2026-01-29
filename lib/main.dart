@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart'; // This needs pubspec.yaml to have url_launcher
-import 'package:google_fonts/google_fonts.dart'; // This needs pubspec.yaml to have google_fonts
-import 'links_data.dart'; // Imports the file we just fixed
+import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'links_data.dart'; // Imports the file with your email
 
 void main() {
   runApp(const BharatVerifyApp());
@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
 
   // Safe Email Launch Function
   Future<void> _sendFeedback() async {
-    // We use the variables from links_data.dart
+    // Uses variables from links_data.dart
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: contactEmail, 
@@ -186,6 +186,7 @@ class CategoryGrid extends StatelessWidget {
   }
 
   void _showToolList(BuildContext context, Map<String, dynamic> category) {
+    // Safely cast the list
     final List<Map<String, String>> tools = 
         (category[mode] as List<dynamic>).map((e) => Map<String, String>.from(e)).toList();
 

@@ -11,8 +11,8 @@ final List<Map<String, String>> verificationLinks = [
   {
     "category": "Business",
     "title": "MSME / Udyam",
-    "url": "https://udyamregistration.gov.in/Government-of-India/Ministry-of-MSME/online-verify-udyam-registration-number.htm",
-    "instruction": "Enter the Udyam Number and Captcha."
+    "url": "https://udyamregistration.gov.in/UA/PrintApplication.aspx",
+    "instruction": "Select 'Verify' or 'Print' option and enter Udyam Number."
   },
 
   // --- ASSETS CATEGORY ---

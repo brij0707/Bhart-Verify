@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'links_data.dart'; // Imports the file with your email
+import 'links_data.dart'; // CONNECTS TO STEP 2
 
 void main() {
   runApp(const BharatVerifyApp());
@@ -18,7 +18,7 @@ class BharatVerifyApp extends StatelessWidget {
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xFFF5F7FA),
         textTheme: GoogleFonts.poppinsTextTheme(),
-        primaryColor: const Color(0xFF0D47A1),
+        primaryColor: const Color(0xFF0D47A1), // Professional Blue
       ),
       home: const HomePage(),
       debugShowCheckedModeBanner: false,
@@ -29,18 +29,16 @@ class BharatVerifyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // Safe Email Launch Function
+  // --- LOGIC: Send Email ---
   Future<void> _sendFeedback() async {
-    // Uses variables from links_data.dart
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: contactEmail, 
+      path: contactEmail, // From links_data.dart
       queryParameters: {
         'subject': emailSubject,
         'body': 'Hi, I have a suggestion for Bharat Verify:\n\n'
       },
     );
-
     try {
       if (!await launchUrl(emailLaunchUri)) {
         debugPrint('Could not launch email client');
@@ -53,14 +51,20 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, 
+      length: 2, // Two Tabs: Verify vs Personal
       child: Scaffold(
         appBar: AppBar(
+          // --- LOGO & TITLE ---
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('assets/logo.png'), // YOUR LOGO HERE
+          ),
           title: const Text('Bharat Verify', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
           backgroundColor: const Color(0xFF0D47A1),
           elevation: 0,
           centerTitle: true,
           
+          // --- EMAIL BUTTON ---
           actions: [
             IconButton(
               icon: const Icon(Icons.mail_outline, color: Colors.white),
@@ -70,10 +74,11 @@ class HomePage extends StatelessWidget {
             const SizedBox(width: 10),
           ],
           
+          // --- TABS (Blue vs Orange) ---
           bottom: const TabBar(
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white60,
-            indicatorColor: Color(0xFFFF9933), 
+            indicatorColor: Color(0xFFFF9933), // Saffron Indicator
             indicatorWeight: 4,
             tabs: [
               Tab(icon: Icon(Icons.travel_explore), text: "VERIFY OTHERS"),
@@ -81,10 +86,12 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
+        
+        // --- BODY ---
         body: const TabBarView(
           children: [
-            CategoryGrid(mode: 'verify'),
-            CategoryGrid(mode: 'personal'),
+            CategoryGrid(mode: 'verify'),   // Tab 1 Content
+            CategoryGrid(mode: 'personal'), // Tab 2 Content
           ],
         ),
       ),
@@ -92,8 +99,9 @@ class HomePage extends StatelessWidget {
   }
 }
 
+// --- REUSABLE GRID COMPONENT ---
 class CategoryGrid extends StatelessWidget {
-  final String mode; 
+  final String mode; // 'verify' or 'personal'
 
   const CategoryGrid({super.key, required this.mode});
 
@@ -128,6 +136,7 @@ class CategoryGrid extends StatelessWidget {
           ),
         ),
 
+        // --- DISCLAIMER ---
         Container(
           padding: const EdgeInsets.all(16),
           color: Colors.grey.shade200,
@@ -144,7 +153,6 @@ class CategoryGrid extends StatelessWidget {
 
   Widget _buildGridCard(BuildContext context, Map<String, dynamic> category) {
     IconData iconData;
-    // Safety check to ensure icon exists
     switch (category['icon']) {
       case 'directions_car': iconData = Icons.directions_car; break;
       case 'store': iconData = Icons.store; break;
@@ -152,7 +160,6 @@ class CategoryGrid extends StatelessWidget {
       default: iconData = Icons.person;
     }
 
-    // Safety check for color
     Color cardColor = Color(category['color'] ?? 0xFF2196F3);
 
     return Card(
@@ -186,7 +193,7 @@ class CategoryGrid extends StatelessWidget {
   }
 
   void _showToolList(BuildContext context, Map<String, dynamic> category) {
-    // Safely cast the list
+    // Logic to switch list based on Verify vs Personal mode
     final List<Map<String, String>> tools = 
         (category[mode] as List<dynamic>).map((e) => Map<String, String>.from(e)).toList();
 

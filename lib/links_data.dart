@@ -1,7 +1,7 @@
 // lib/links_data.dart
 
 // 1. Contact Configuration
-const String contactEmail = "innomind2022@gmail.com"; // Add your email here
+const String contactEmail = "Innomind2022@gmail.com"; 
 const String emailSubject = "Bharat Verify App Feedback";
 
 // 2. The Data Structure

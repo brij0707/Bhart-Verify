@@ -1,5 +1,4 @@
 // This file acts as your "Database" of links.
-// If a government website changes, update the URL here.
 
 final List<Map<String, String>> verificationLinks = [
   // --- BUSINESS CATEGORY ---

@@ -2,7 +2,7 @@
 
 // 1. Contact Configuration
 const String contactEmail = "Innomind2022@gmail.com"; 
-const String emailSubject = "Bharat Verify App Feedback";
+const String emailSubject = "Best Verifier App Feedback";
 
 // 2. The Data Structure
 final Map<String, dynamic> gridCategories = {
@@ -16,7 +16,7 @@ final Map<String, dynamic> gridCategories = {
     "verify": [
       {
         "name": "Vehicle RC Status",
-        "url": "https://vahan.parivahan.gov.in/nrservices/faces/user/citizen/citizenlogin.xhtml", // UPDATED
+        "url": "https://vahan.parivahan.gov.in/nrservices/faces/user/citizen/citizenlogin.xhtml",
         "desc": "Check Owner Name, Age & Fuel Type."
       },
       {
@@ -26,7 +26,7 @@ final Map<String, dynamic> gridCategories = {
       },
       {
         "name": "Stolen Vehicle Check",
-        "url": "https://zipnet.delhipolice.gov.in/VehiclesMobiles/MissingVehicles", // UPDATED
+        "url": "https://zipnet.delhipolice.gov.in/VehiclesMobiles/MissingVehicles",
         "desc": "Search National Crime Records."
       },
       {
@@ -68,9 +68,9 @@ final Map<String, dynamic> gridCategories = {
         "desc": "Verify if an Aadhaar Number exists."
       },
       {
-        "name": "Voter ID Search",
-        "url": "https://electoralsearch.eci.gov.in/",
-        "desc": "Search Name in Voter List."
+        "name": "Police Clearance (PCC)",
+        "url": "https://digitalpolice.gov.in/Create_PCC_Request.aspx",
+        "desc": "Check Criminal Background Status."
       },
       {
         "name": "Court Case Search",
@@ -81,9 +81,24 @@ final Map<String, dynamic> gridCategories = {
         "name": "Active SIM Check",
         "url": "https://tafcop.sancharsaathi.gov.in/telecomUser/",
         "desc": "Count mobile numbers on this ID."
+      },
+      {
+        "name": "Voter ID Search",
+        "url": "https://electoralsearch.eci.gov.in/",
+        "desc": "Search Name in Voter List."
       }
     ],
     "personal": [
+      {
+        "name": "Open DigiLocker",
+        "url": "https://www.digilocker.gov.in/",
+        "desc": "Access all your official Govt IDs."
+      },
+      {
+        "name": "Vaccine Certificate",
+        "url": "https://selfregistration.cowin.gov.in/",
+        "desc": "Download Covid Vaccination Proof."
+      },
       {
         "name": "Download E-Aadhaar",
         "url": "https://myaadhaar.uidai.gov.in/genricDownloadAadhaar",
@@ -91,13 +106,8 @@ final Map<String, dynamic> gridCategories = {
       },
       {
         "name": "Passport Status",
-        "url": "https://services2.passportindia.gov.in/forms/PreLogin", // UPDATED (Clean Link)
+        "url": "https://services2.passportindia.gov.in/forms/PreLogin",
         "desc": "Track your Passport Application."
-      },
-      {
-        "name": "Download Voter Slip",
-        "url": "https://electoralsearch.eci.gov.in/",
-        "desc": "Print your Voting Slip."
       }
     ]
   },
@@ -112,12 +122,17 @@ final Map<String, dynamic> gridCategories = {
     "verify": [
       {
         "name": "Company Check",
-        "url": "https://www.filesure.in/search/company", // UPDATED
-        "desc": "Search Company & Director Details."
+        "url": "https://www.filesure.in/search/company",
+        "desc": "Search Company Financials."
+      },
+      {
+        "name": "Verify Director (DIN)",
+        "url": "https://www.mca.gov.in/content/mca/global/en/mca/master-data/MDS.html",
+        "desc": "Check if person is a Director."
       },
       {
         "name": "MSME Verify",
-        "url": "https://udyamregistration.gov.in/udyam_verify.aspx", // UPDATED
+        "url": "https://udyamregistration.gov.in/udyam_verify.aspx",
         "desc": "Verify Small Business Registration."
       },
       {
@@ -153,6 +168,11 @@ final Map<String, dynamic> gridCategories = {
     "icon": "account_balance_wallet",
     "color": 0xFF9C27B0, // Purple
     "verify": [
+      {
+        "name": "Verify Bank Acct (PFMS)",
+        "url": "https://pfms.nic.in/static/NewLayoutCommonContent.aspx?RequestPagename=Static/KnowYourPayment.aspx",
+        "desc": "Verify Account for Govt Payments."
+      },
       {
         "name": "Verify PAN Details",
         "url": "https://eportal.incometax.gov.in/iec/foservices/#/pre-login/verifyYourPAN",

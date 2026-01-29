@@ -1,12 +1,13 @@
 // lib/links_data.dart
 
-// Replace this with your actual email for feedback
-const String contactEmail = "innomind2022@gmail.com"; 
-const String emailSubject = "Bharat Verify - Suggestion / Feedback";
+// 1. Contact Configuration
+const String contactEmail = "innomind2022@gmail.com"; // Add your email here
+const String emailSubject = "Bharat Verify App Feedback";
 
+// 2. The Data Structure
 final Map<String, dynamic> gridCategories = {
   // ==============================
-  // 🚘 ASSETS (Vehicle & Transport)
+  // 🚘 ASSETS
   // ==============================
   "ASSETS": {
     "title": "Assets & Transport",
@@ -54,7 +55,7 @@ final Map<String, dynamic> gridCategories = {
   },
 
   // ==============================
-  // 👤 IDENTITY (Aadhaar & Voter)
+  // 👤 IDENTITY
   // ==============================
   "IDENTITY": {
     "title": "Identity & Background",
@@ -102,7 +103,7 @@ final Map<String, dynamic> gridCategories = {
   },
 
   // ==============================
-  // 🏢 BUSINESS (GST & Shops)
+  // 🏢 BUSINESS
   // ==============================
   "BUSINESS": {
     "title": "Business & Shops",
@@ -145,7 +146,7 @@ final Map<String, dynamic> gridCategories = {
   },
 
   // ==============================
-  // 💰 FINANCE (PAN & Tax)
+  // 💰 FINANCE
   // ==============================
   "FINANCE": {
     "title": "Finance & Tax",

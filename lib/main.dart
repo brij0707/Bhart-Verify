@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'links_data.dart'; // CONNECTS TO STEP 2
+import 'links_data.dart'; 
 
 void main() {
   runApp(const BharatVerifyApp());
@@ -18,7 +18,7 @@ class BharatVerifyApp extends StatelessWidget {
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xFFF5F7FA),
         textTheme: GoogleFonts.poppinsTextTheme(),
-        primaryColor: const Color(0xFF0D47A1), // Professional Blue
+        primaryColor: const Color(0xFF0D47A1), 
       ),
       home: const HomePage(),
       debugShowCheckedModeBanner: false,
@@ -29,16 +29,15 @@ class BharatVerifyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // --- LOGIC: Send Email ---
+  // --- UPDATED EMAIL LOGIC (No More + Signs) ---
   Future<void> _sendFeedback() async {
-    final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: contactEmail, // From links_data.dart
-      queryParameters: {
-        'subject': emailSubject,
-        'body': 'Hi, I have a suggestion for Bharat Verify:\n\n'
-      },
-    );
+    // We manually encode spaces as %20 to prevent '+' signs
+    final String subject = Uri.encodeComponent(emailSubject);
+    final String body = Uri.encodeComponent("Hi, I have a suggestion for Bharat Verify:\n\n");
+    
+    // Construct the manual link
+    final Uri emailLaunchUri = Uri.parse("mailto:$contactEmail?subject=$subject&body=$body");
+
     try {
       if (!await launchUrl(emailLaunchUri)) {
         debugPrint('Could not launch email client');
@@ -51,20 +50,19 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, // Two Tabs: Verify vs Personal
+      length: 2, 
       child: Scaffold(
         appBar: AppBar(
-          // --- LOGO & TITLE ---
+          // LOGO
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/logo.png'), // YOUR LOGO HERE
+            child: Image.asset('assets/logo.png'), 
           ),
           title: const Text('Bharat Verify', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
           backgroundColor: const Color(0xFF0D47A1),
           elevation: 0,
           centerTitle: true,
           
-          // --- EMAIL BUTTON ---
           actions: [
             IconButton(
               icon: const Icon(Icons.mail_outline, color: Colors.white),
@@ -74,11 +72,10 @@ class HomePage extends StatelessWidget {
             const SizedBox(width: 10),
           ],
           
-          // --- TABS (Blue vs Orange) ---
           bottom: const TabBar(
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white60,
-            indicatorColor: Color(0xFFFF9933), // Saffron Indicator
+            indicatorColor: Color(0xFFFF9933), 
             indicatorWeight: 4,
             tabs: [
               Tab(icon: Icon(Icons.travel_explore), text: "VERIFY OTHERS"),
@@ -87,11 +84,10 @@ class HomePage extends StatelessWidget {
           ),
         ),
         
-        // --- BODY ---
         body: const TabBarView(
           children: [
-            CategoryGrid(mode: 'verify'),   // Tab 1 Content
-            CategoryGrid(mode: 'personal'), // Tab 2 Content
+            CategoryGrid(mode: 'verify'),   
+            CategoryGrid(mode: 'personal'), 
           ],
         ),
       ),
@@ -99,9 +95,8 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// --- REUSABLE GRID COMPONENT ---
 class CategoryGrid extends StatelessWidget {
-  final String mode; // 'verify' or 'personal'
+  final String mode; 
 
   const CategoryGrid({super.key, required this.mode});
 
@@ -136,7 +131,6 @@ class CategoryGrid extends StatelessWidget {
           ),
         ),
 
-        // --- DISCLAIMER ---
         Container(
           padding: const EdgeInsets.all(16),
           color: Colors.grey.shade200,
@@ -193,7 +187,6 @@ class CategoryGrid extends StatelessWidget {
   }
 
   void _showToolList(BuildContext context, Map<String, dynamic> category) {
-    // Logic to switch list based on Verify vs Personal mode
     final List<Map<String, String>> tools = 
         (category[mode] as List<dynamic>).map((e) => Map<String, String>.from(e)).toList();
 

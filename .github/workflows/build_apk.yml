@@ -28,7 +28,8 @@ jobs:
           mv assets temp_safe/
           mv pubspec.yaml temp_safe/
           
-          flutter create . --org com.innomind.bharatverify --project-name bharat_verify
+          # Force fresh build with the new safe branding
+          flutter create . --org com.innomind.bestverifier --project-name best_verifier
           
           rm -rf lib assets pubspec.yaml
           mv temp_safe/lib .
@@ -39,11 +40,9 @@ jobs:
       - name: Get Dependencies
         run: flutter pub get
 
-      # --- FORCE ICON GENERATION ---
       - name: Generate App Icon
         run: |
           dart run flutter_launcher_icons
-          # Run twice to force overwrite
           dart run flutter_launcher_icons
 
       - name: Build APK
@@ -52,5 +51,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: bharat-verify-app
+          name: best-verifier-app
           path: build/app/outputs/flutter-apk/app-release.apk

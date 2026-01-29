@@ -29,7 +29,6 @@ class BestVerifierApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // --- LOGIC: Send Email (Fixed for special characters) ---
   Future<void> _sendFeedback() async {
     final String subject = Uri.encodeComponent(emailSubject);
     final String body = Uri.encodeComponent("Hi, I have a suggestion for Best Verifier:\n\n");
@@ -50,17 +49,14 @@ class HomePage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/logo.png'),
-          ),
           title: const Text('Best Verifier', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
           backgroundColor: const Color(0xFF0D47A1),
           elevation: 0,
           centerTitle: true,
+          iconTheme: const IconThemeData(color: Colors.white), // Makes the menu icon white
           actions: [
             IconButton(
-              icon: const Icon(Icons.mail_outline, color: Colors.white),
+              icon: const Icon(Icons.mail_outline),
               tooltip: 'Send Suggestion',
               onPressed: _sendFeedback,
             ),
@@ -77,6 +73,47 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
+        
+        // --- NEW DRAWER MENU ---
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration: const BoxDecoration(color: Color(0xFF0D47A1)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/logo.png', height: 60),
+                    const SizedBox(height: 10),
+                    const Text("Best Verifier", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.info_outline),
+                title: const Text("About This App"),
+                onTap: () => _showAboutDialog(context),
+              ),
+              ListTile(
+                leading: const Icon(Icons.privacy_tip_outlined),
+                title: const Text("Privacy Policy"),
+                onTap: () => _showPrivacyDialog(context),
+              ),
+              ListTile(
+                leading: const Icon(Icons.feedback_outlined),
+                title: const Text("Send Feedback"),
+                onTap: _sendFeedback,
+              ),
+              const Divider(),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text("Version 1.0.0\nPrivate Utility Tool", style: TextStyle(color: Colors.grey, fontSize: 12)),
+              ),
+            ],
+          ),
+        ),
+
         body: const TabBarView(
           children: [
             CategoryGrid(mode: 'verify'),
@@ -86,18 +123,51 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+  void _showAboutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("About Best Verifier"),
+        content: const Text(
+          "Best Verifier is a simplified directory for Indian citizens. "
+          "Our goal is to provide direct access to official Government portals "
+          "without needing to remember complex URLs.\n\n"
+          "This app is a private project and is not affiliated with the Government of India."
+        ),
+        actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text("Close"))],
+      ),
+    );
+  }
+
+  void _showPrivacyDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Privacy Policy"),
+        content: const SingleChildScrollView(
+          child: Text(
+            "1. Data Collection: We do not collect, store, or share any personal data.\n\n"
+            "2. Cookies: This app does not use cookies.\n\n"
+            "3. External Links: When you click a link, you are redirected to official Government websites. "
+            "Your interaction on those sites is governed by their respective privacy policies.\n\n"
+            "4. Permissions: We do not require any sensitive permissions (Contacts, Storage, etc.)."
+          ),
+        ),
+        actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text("Close"))],
+      ),
+    );
+  }
 }
 
 class CategoryGrid extends StatelessWidget {
   final String mode;
-
   const CategoryGrid({super.key, required this.mode});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // --- LEGAL DISCLAIMER ---
         if (mode == 'verify') 
           Container(
             margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -121,19 +191,15 @@ class CategoryGrid extends StatelessWidget {
               ],
             ),
           ),
-
         const SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            mode == 'verify' 
-                ? "Select a category to investigate" 
-                : "Manage your personal documents",
+            mode == 'verify' ? "Select a category to investigate" : "Manage your personal documents",
             style: const TextStyle(fontSize: 16, color: Colors.black54),
           ),
         ),
         const SizedBox(height: 10),
-        
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -142,22 +208,8 @@ class CategoryGrid extends StatelessWidget {
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
               childAspectRatio: 0.85,
-              children: gridCategories.entries.map((entry) {
-                return _buildGridCard(context, entry.value);
-              }).toList(),
+              children: gridCategories.entries.map((entry) => _buildGridCard(context, entry.value)).toList(),
             ),
-          ),
-        ),
-
-        // --- PRIVACY FOOTER ---
-        Container(
-          padding: const EdgeInsets.all(12),
-          color: Colors.grey.shade200,
-          width: double.infinity,
-          child: const Text(
-            "Privacy: We do not store or sync any user data.",
-            style: TextStyle(fontSize: 10, color: Colors.grey),
-            textAlign: TextAlign.center,
           ),
         ),
       ],
@@ -172,9 +224,7 @@ class CategoryGrid extends StatelessWidget {
       case 'account_balance_wallet': iconData = Icons.account_balance_wallet; break;
       default: iconData = Icons.person;
     }
-
     Color cardColor = Color(category['color'] ?? 0xFF2196F3);
-
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -191,14 +241,8 @@ class CategoryGrid extends StatelessWidget {
               child: Icon(iconData, size: 35, color: cardColor),
             ),
             const SizedBox(height: 15),
-            Text(
-              category['title'].split(" & ")[0],
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              category['title'].split(" & ").length > 1 ? category['title'].split(" & ")[1] : "",
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
-            ),
+            Text(category['title'].split(" & ")[0], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(category['title'].split(" & ").length > 1 ? category['title'].split(" & ")[1] : "", style: const TextStyle(fontSize: 12, color: Colors.grey)),
           ],
         ),
       ),
@@ -206,40 +250,27 @@ class CategoryGrid extends StatelessWidget {
   }
 
   void _showToolList(BuildContext context, Map<String, dynamic> category) {
-    final List<Map<String, String>> tools = 
-        (category[mode] as List<dynamic>).map((e) => Map<String, String>.from(e)).toList();
-
+    final List<Map<String, String>> tools = (category[mode] as List<dynamic>).map((e) => Map<String, String>.from(e)).toList();
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
         padding: const EdgeInsets.all(20),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-        ),
+        decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(width: 40, height: 5, decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(10))),
             const SizedBox(height: 20),
-            
-            Text(
-              "${category['title']} (${mode == 'verify' ? 'Verify' : 'My Docs'})", 
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-            ),
+            Text("${category['title']} (${mode == 'verify' ? 'Verify' : 'My Docs'})", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 20),
-            
             Expanded(
               child: ListView(
                 children: tools.map((tool) => Card(
                   margin: const EdgeInsets.only(bottom: 12),
                   elevation: 0,
                   color: mode == 'verify' ? Colors.blue.shade50 : Colors.orange.shade50,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(color: mode == 'verify' ? Colors.blue.shade100 : Colors.orange.shade100),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: mode == 'verify' ? Colors.blue.shade100 : Colors.orange.shade100)),
                   child: ListTile(
                     title: Text(tool['name']!, style: const TextStyle(fontWeight: FontWeight.bold)),
                     subtitle: Text(tool['desc']!, style: const TextStyle(fontSize: 12)),
@@ -256,31 +287,19 @@ class CategoryGrid extends StatelessWidget {
     );
   }
 
-  // --- CONSENT POPUP LOGIC ---
   void _handleLinkClick(BuildContext context, String url) {
     if (mode == 'personal') {
       _launchURL(url);
       return;
     }
-
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text("Consent Required"),
         content: const Text("I confirm that I have the explicit consent of the individual to verify this document."),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel", style: TextStyle(color: Colors.grey)),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context); 
-              _launchURL(url); 
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D47A1), foregroundColor: Colors.white),
-            child: const Text("I Agree & Proceed"),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
+          ElevatedButton(onPressed: () { Navigator.pop(context); _launchURL(url); }, child: const Text("Agree & Proceed")),
         ],
       ),
     );

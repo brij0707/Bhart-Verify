@@ -16,23 +16,23 @@ final Map<String, dynamic> gridCategories = {
     "verify": [
       {
         "name": "Vehicle RC Status",
-        "url": "https://parivahan.gov.in/rcdlstatus/?pur_cd=102", // Fixed: 102 for Vehicle
+        "url": "https://vahan.parivahan.gov.in/nrservices/faces/user/citizen/citizenlogin.xhtml", // UPDATED
         "desc": "Check Owner Name, Age & Fuel Type."
       },
       {
         "name": "Driving License (DL)",
-        "url": "https://parivahan.gov.in/rcdlstatus/?pur_cd=101", // Fixed: 101 for License
+        "url": "https://parivahan.gov.in/rcdlstatus/?pur_cd=101",
         "desc": "Verify if a License is valid."
+      },
+      {
+        "name": "Stolen Vehicle Check",
+        "url": "https://zipnet.delhipolice.gov.in/VehiclesMobiles/MissingVehicles", // UPDATED
+        "desc": "Search National Crime Records."
       },
       {
         "name": "e-Challan Check",
         "url": "https://echallan.parivahan.gov.in/index/accused-challan",
         "desc": "Check for unpaid Traffic Fines."
-      },
-      {
-        "name": "Stolen Vehicle Check",
-        "url": "https://digitalpolice.gov.in/",
-        "desc": "Search National Crime Records (NCRB)."
       }
     ],
     "personal": [
@@ -90,14 +90,14 @@ final Map<String, dynamic> gridCategories = {
         "desc": "Download your official Aadhaar PDF."
       },
       {
+        "name": "Passport Status",
+        "url": "https://services2.passportindia.gov.in/forms/PreLogin", // UPDATED (Clean Link)
+        "desc": "Track your Passport Application."
+      },
+      {
         "name": "Download Voter Slip",
         "url": "https://electoralsearch.eci.gov.in/",
         "desc": "Print your Voting Slip."
-      },
-      {
-        "name": "Passport Status",
-        "url": "https://portal2.passportindia.gov.in/AppOnlineProject/statusTracker/trackStatusInpNew",
-        "desc": "Track your Passport Application."
       }
     ]
   },
@@ -111,24 +111,24 @@ final Map<String, dynamic> gridCategories = {
     "color": 0xFFFF9800, // Orange
     "verify": [
       {
+        "name": "Company Check",
+        "url": "https://www.filesure.in/search/company", // UPDATED
+        "desc": "Search Company & Director Details."
+      },
+      {
+        "name": "MSME Verify",
+        "url": "https://udyamregistration.gov.in/udyam_verify.aspx", // UPDATED
+        "desc": "Verify Small Business Registration."
+      },
+      {
         "name": "GST Verification",
         "url": "https://services.gst.gov.in/services/searchtp",
         "desc": "Verify Shop Legal Name & Status."
       },
       {
-        "name": "Company Check (MCA)",
-        "url": "https://www.mca.gov.in/content/mca/global/en/mca/master-data/MDS.html",
-        "desc": "Verify Pvt Ltd Company Directors."
-      },
-      {
         "name": "FSSAI License Check",
         "url": "https://foscos.fssai.gov.in/",
         "desc": "Verify Food/Restaurant License."
-      },
-      {
-        "name": "MSME / Udyam Check",
-        "url": "https://udyamregistration.gov.in/UA/PrintApplication.aspx",
-        "desc": "Verify Small Business Registration."
       }
     ],
     "personal": [

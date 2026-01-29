@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'links_data.dart'; 
+import 'links_data.dart';
 
 void main() {
-  runApp(const BharatVerifyApp());
+  runApp(const BestVerifierApp());
 }
 
-class BharatVerifyApp extends StatelessWidget {
-  const BharatVerifyApp({super.key});
+class BestVerifierApp extends StatelessWidget {
+  const BestVerifierApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Bharat Verify',
+      title: 'Best Verifier',
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xFFF5F7FA),
         textTheme: GoogleFonts.poppinsTextTheme(),
-        primaryColor: const Color(0xFF0D47A1), 
+        primaryColor: const Color(0xFF0D47A1),
       ),
       home: const HomePage(),
       debugShowCheckedModeBanner: false,
@@ -29,13 +29,10 @@ class BharatVerifyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // --- UPDATED EMAIL LOGIC (No More + Signs) ---
+  // --- LOGIC: Send Email (Fixed for special characters) ---
   Future<void> _sendFeedback() async {
-    // We manually encode spaces as %20 to prevent '+' signs
     final String subject = Uri.encodeComponent(emailSubject);
-    final String body = Uri.encodeComponent("Hi, I have a suggestion for Bharat Verify:\n\n");
-    
-    // Construct the manual link
+    final String body = Uri.encodeComponent("Hi, I have a suggestion for Best Verifier:\n\n");
     final Uri emailLaunchUri = Uri.parse("mailto:$contactEmail?subject=$subject&body=$body");
 
     try {
@@ -50,19 +47,17 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, 
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
-          // LOGO
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/logo.png'), 
+            child: Image.asset('assets/logo.png'),
           ),
-          title: const Text('Bharat Verify', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+          title: const Text('Best Verifier', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
           backgroundColor: const Color(0xFF0D47A1),
           elevation: 0,
           centerTitle: true,
-          
           actions: [
             IconButton(
               icon: const Icon(Icons.mail_outline, color: Colors.white),
@@ -71,11 +66,10 @@ class HomePage extends StatelessWidget {
             ),
             const SizedBox(width: 10),
           ],
-          
           bottom: const TabBar(
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white60,
-            indicatorColor: Color(0xFFFF9933), 
+            indicatorColor: Color(0xFFFF9933),
             indicatorWeight: 4,
             tabs: [
               Tab(icon: Icon(Icons.travel_explore), text: "VERIFY OTHERS"),
@@ -83,11 +77,10 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
-        
         body: const TabBarView(
           children: [
-            CategoryGrid(mode: 'verify'),   
-            CategoryGrid(mode: 'personal'), 
+            CategoryGrid(mode: 'verify'),
+            CategoryGrid(mode: 'personal'),
           ],
         ),
       ),
@@ -96,7 +89,7 @@ class HomePage extends StatelessWidget {
 }
 
 class CategoryGrid extends StatelessWidget {
-  final String mode; 
+  final String mode;
 
   const CategoryGrid({super.key, required this.mode});
 
@@ -104,7 +97,32 @@ class CategoryGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 20),
+        // --- LEGAL DISCLAIMER ---
+        if (mode == 'verify') 
+          Container(
+            margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.amber.shade50,
+              border: Border.all(color: Colors.amber.shade800),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.info_outline, color: Colors.amber, size: 20),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    "DISCLAIMER: 'Best Verifier' is a private utility tool. We are NOT affiliated with any Government entity. All links open official public websites.",
+                    style: TextStyle(fontSize: 11, color: Colors.brown.shade800),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+        const SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
@@ -114,7 +132,7 @@ class CategoryGrid extends StatelessWidget {
             style: const TextStyle(fontSize: 16, color: Colors.black54),
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         
         Expanded(
           child: Padding(
@@ -131,13 +149,14 @@ class CategoryGrid extends StatelessWidget {
           ),
         ),
 
+        // --- PRIVACY FOOTER ---
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12),
           color: Colors.grey.shade200,
           width: double.infinity,
           child: const Text(
-            "Disclaimer: We do not store any data. This app connects you to official Government portals.",
-            style: TextStyle(fontSize: 11, color: Colors.grey),
+            "Privacy: We do not store or sync any user data.",
+            style: TextStyle(fontSize: 10, color: Colors.grey),
             textAlign: TextAlign.center,
           ),
         ),
@@ -225,7 +244,7 @@ class CategoryGrid extends StatelessWidget {
                     title: Text(tool['name']!, style: const TextStyle(fontWeight: FontWeight.bold)),
                     subtitle: Text(tool['desc']!, style: const TextStyle(fontSize: 12)),
                     trailing: Icon(Icons.arrow_forward_ios, size: 14, color: mode == 'verify' ? Colors.blue : Colors.orange),
-                    onTap: () => _launchURL(tool['url']!),
+                    onTap: () => _handleLinkClick(context, tool['url']!),
                   ),
                 )).toList(),
               ),
@@ -233,6 +252,36 @@ class CategoryGrid extends StatelessWidget {
             const SizedBox(height: 20),
           ],
         ),
+      ),
+    );
+  }
+
+  // --- CONSENT POPUP LOGIC ---
+  void _handleLinkClick(BuildContext context, String url) {
+    if (mode == 'personal') {
+      _launchURL(url);
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Consent Required"),
+        content: const Text("I confirm that I have the explicit consent of the individual to verify this document."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel", style: TextStyle(color: Colors.grey)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context); 
+              _launchURL(url); 
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D47A1), foregroundColor: Colors.white),
+            child: const Text("I Agree & Proceed"),
+          ),
+        ],
       ),
     );
   }

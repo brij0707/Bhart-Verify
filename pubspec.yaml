@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^6.1.0
-  url_launcher: ^6.2.0  # Required for Links & Email
+  url_launcher: ^6.2.0
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

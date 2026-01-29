@@ -21,7 +21,12 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.19.0' # Uses a stable version
+        flutter-version: '3.19.0'
+
+    # --- THIS IS THE NEW MAGIC STEP ---
+    - name: Generate Missing Android Files
+      run: flutter create . --project-name bharat_verify
+    # ----------------------------------
 
     - name: Get Dependencies
       run: flutter pub get

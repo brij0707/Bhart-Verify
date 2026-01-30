@@ -9,17 +9,21 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  url_launcher: ^6.2.0
+  # The Bridge: Detects and launches official Gov apps (QR Scanner, mAadhaar)
+  external_app_launcher: ^4.0.3 
+  # Browser: Opens standard web URLs (Incometax, Parivahan)
+  url_launcher: ^6.3.0
+  # Style: Professional fonts for the UI
   google_fonts: ^6.1.0
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  # Icon Generator
   flutter_launcher_icons: ^0.13.1
 
-# --- ICON CONFIGURATION ---
 flutter_icons:
   android: true
   ios: true
